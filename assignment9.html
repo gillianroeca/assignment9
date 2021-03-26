@@ -4,41 +4,102 @@
 <meta charset="utf-8">
 <title>JSON Playlist</title>
 
-<script   src="https://code.jquery.com/jquery-3.6.0.js"   
-integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="   
-crossorigin="anonymous"></script>
-
+<script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous
+"></script>
+<script language="javascript"></script>
 </head>
 
 
 
-<body>
+<body>	
 
+<script language="javascript" >
+	$.get("http://www.secretcheese.com/comp20/demo/gillian3.json",
+		  function(data) {
+			jsondata = JSON.stringify(data);
+			document.write(jsondata +"<br/><br/><br/>");
+			//document.getElementById("rawData").innerText = jsondata + "<br/>";
+
+		strHTML= "<table> <tr> <th>Song Title</th> <th>Artist(s)</th> <th>Genre(s)</th><th>Year</th></tr>";
+		data.forEach(function(playList) { 
+		strHTML += "<tr>" 
+			    + "<td style='padding:10px;'>" + playList.songtitle + "</td>"
+				+ "<td style='padding:10px;'>" + playList.artists + "</td>"
+				+ "<td style='padding:10px;'>" + playList.genre + "</td>"
+				+ "<td style='padding:10px;'>" + playList.year + "</td> </tr>";
+			}) 
+	strHTML += "</table><br/><br/>";
+	document.write (strHTML);  /**/
+
+
+
+		document.write("Pick a Genre:  ");
+		genresArr = [];
+		titles = [];
+		i = 0;
+		data.forEach(function(playList) { 
+			genresArr[i] = playList.genre;
+			titles[i] = playList.songtitle;
+			i++;
+		})
 	
-	<div id="rawData"> </div>
-	<div id="songs"></div>
+		seen = {};
+    	uniqueArray = [];
+    	len = genresArr.length;
+    	j = 0;
+    	for(let i = 0; i < len; i++) 
+    	{
+         	item = genresArr[i];
+        	if(seen[item] !== 1) 
+        	{
+               seen[item] = 1;
+               uniqueArray[j++] = item;
+         	}
+    	}
 
-	<script language="javascript">
-	$.get("https://gillianroeca.github.io/assignment9/assignment9.json"
-	function( data ) 
-	{
-			str = JSON.stringify(data);
-			str+= "<br/><br/>";
-			document.getElementById("rawData").innerHTML = str;
+    	genSelect = "<select name='gen' size='1'>";
+    	x = 0;
+    	while (x < uniqueArray.length)
+    	{
+    		genSelect += "<option>";
+			genSelect += uniqueArray[x]; 
+			genSelect+="</option>";
+			x++;
+    	}
+    	genSelect += "</select>";
+		document.write (genSelect + "<br/><br/>");
+
+		button = "<input type = 'button' value = 'Filter' />";
+		document.write (button +"<br/>");
+
+	$('input[type="button"]').click(function() //these things happen when button is clicked
+  	{
+  		pickedtitles = [];
+		picked = document.getElementsByName("gen")[0].value;
+			for (j=0; j<genresArr.length; j++)
+			{
+				if(genresArr[j] == picked)
+				{
+					pickedtitles.push(titles[j]);
+				}
+			}
+		x = 0;
+		while (x <pickedtitles.length)
+		{
+			document.write(pickedtitles[x] + "<br/>");
+			x++;
+		}
 		
-		//strHTML= "<ul>";
-		//data.forEach(function(song) { 
-		//strHTML += song.name + "<br/> Artist(s): " 
-			//	+ song.type+ "<br/> Genre(s): "
-				//+ song.genre+ "<br/> Released: "
-				//+ song.year; 
-		//	}) 
-	//strHTML += "</ul>";
-	//document.write (strHTML);  /**/
-	})
+			
+
+	});
+
+})
+
 </script>
 
-	
+
+
 
 
 
