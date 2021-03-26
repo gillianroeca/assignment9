@@ -14,12 +14,13 @@
 <body>	
 
 <script language="javascript" >
-	$.get("http://www.secretcheese.com/comp20/demo/gillian3.json",
+	$.get("https://gillianroeca.github.io/assignment9/playList.json",
 		  function(data) {
 			jsondata = JSON.stringify(data);
 			document.write(jsondata +"<br/><br/><br/>");
 			//document.getElementById("rawData").innerText = jsondata + "<br/>";
 
+		//make table to display and format data 
 		strHTML= "<table> <tr> <th>Song Title</th> <th>Artist(s)</th> <th>Genre(s)</th><th>Year</th></tr>";
 		data.forEach(function(playList) { 
 		strHTML += "<tr>" 
@@ -37,32 +38,32 @@
 		genresArr = [];
 		titles = [];
 		i = 0;
-		data.forEach(function(playList) { 
+		data.forEach(function(playList) {  //make arrays of just genres and just songtitles
 			genresArr[i] = playList.genre;
 			titles[i] = playList.songtitle;
 			i++;
 		})
 	
 		seen = {};
-    	uniqueArray = [];
+    	uniqueArray = []; 
     	len = genresArr.length;
     	j = 0;
-    	for(let i = 0; i < len; i++) 
+    	for(i = 0; i < len; i++) //go through arrau of all genres
     	{
-         	item = genresArr[i];
-        	if(seen[item] !== 1) 
+         	item = genresArr[i]; 
+        	if(seen[item] !== 1)  //looks at if the current item is found multiple times through the array 
         	{
                seen[item] = 1;
-               uniqueArray[j++] = item;
+               uniqueArray[j++] = item; //makes aray of all genres (no doubles)
          	}
     	}
 
-    	genSelect = "<select name='gen' size='1'>";
+    	genSelect = "<select name='gen' size='1'>"; //make selector
     	x = 0;
     	while (x < uniqueArray.length)
     	{
     		genSelect += "<option>";
-			genSelect += uniqueArray[x]; 
+			genSelect += uniqueArray[x]; //selector of the genres from data (no doubles)
 			genSelect+="</option>";
 			x++;
     	}
@@ -74,17 +75,17 @@
 
 	$('input[type="button"]').click(function() //these things happen when button is clicked
   	{
-  		pickedtitles = [];
-		picked = document.getElementsByName("gen")[0].value;
+  		pickedtitles = []; //new array form just the titles of the picked genre
+		picked = document.getElementsByName("gen")[0].value; //get selected genre
 			for (j=0; j<genresArr.length; j++)
 			{
 				if(genresArr[j] == picked)
 				{
-					pickedtitles.push(titles[j]);
+					pickedtitles.push(titles[j]); //add all titles with selected genre 
 				}
 			}
 		x = 0;
-		while (x <pickedtitles.length)
+		while (x <pickedtitles.length) //format display of selected titles
 		{
 			document.write(pickedtitles[x] + "<br/>");
 			x++;
